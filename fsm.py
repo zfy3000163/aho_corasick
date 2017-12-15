@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import sys
 
 class Node():
 
@@ -124,15 +125,19 @@ class Fsm():
                     stack.append(nxt)
 
 
-    def search(self, text):
+    def search(self, text, last_node=None):
         '''
         Traverse the trie for matches.
-        
+
         If there are no valid goto transition, iterate back
         through fail transitions until either a valid goto found or we are at
         the base node.
         '''
-        node = self.base
+        if last_node:
+            node = last_node
+        else:
+            node = self.base
+
         for i,c in enumerate(text):
             while node and not node.goto(c):
                 node = node.fail
@@ -143,6 +148,8 @@ class Fsm():
 
             if node.output:
                 print(i, node.output)
+
+        return node
 
 
     def dump(self):
@@ -157,9 +164,9 @@ if __name__ == "__main__":
     fsm = Fsm()
 
     ls = []
-    ls.append("hers")
+    ls.append("good")
     ls.append("his")
-    ls.append("she")
+    ls.append("word")
     ls.append("he")
     ls.append("sh")
     ls.append("shes")
@@ -168,4 +175,5 @@ if __name__ == "__main__":
 
     fsm.dump()
 
-    fsm.search("well now this is a strange story about hershe days shes hein today hers")
+    ret = fsm.search(sys.argv[1], None)
+    ret = fsm.search(sys.argv[2], ret)

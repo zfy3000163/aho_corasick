@@ -175,5 +175,5 @@ if __name__ == "__main__":
 
     fsm.dump()
 
-    ret = fsm.search(sys.argv[1], None)
-    ret = fsm.search(sys.argv[2], ret)
+    ret = fsm.search("abcdgo", None)
+    ret = fsm.search("odhello", ret)
